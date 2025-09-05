@@ -16,12 +16,35 @@ def resize_img(img, target_width=300):
 
     return resized_img
 
+
 def to_grayscale(img):
     gray_img = img.convert("L")
 
     return gray_img
 
-# map brightness to ascii chars
+def map_brightness(img):
+    ascii_chars = '@%#*+=-:. '
+
+    pixels = img.getdata()
+    w, _ = img.size
+
+    row_idx = 0
+    ascii_img = ''
+
+    for pixel in pixels:
+        if row_idx <= w:
+            ascii_chars_idx = pixel * (len(ascii_chars) - 1) // 255
+            ascii_char = ascii_chars[ascii_chars_idx] 
+
+            ascii_img = ascii_img + ascii_char 
+
+            row_idx += 1
+        else:
+            ascii_img = ascii_img + '\n'
+            row_idx = 0
+
+    return ascii_img
+
 
 def main():
     try:
