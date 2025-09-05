@@ -83,7 +83,8 @@ def frame_to_ascii(frame, width=100):
 
 def play_vid(path):
     try:
-        cap = cv2.VideoCapture(path)
+        # cap = cv2.VideoCapture(0) # for camera input
+        cap = cv2.VideoCapture(path) # for video file input
         fps = cap.get(cv2.CAP_PROP_FPS)
 
         while cap.isOpened():
@@ -98,6 +99,7 @@ def play_vid(path):
 
             time.sleep(1 / fps)
     except KeyboardInterrupt:
+        # os.system('cls' if os.name == 'nt' else 'clear')
         print("Video playback interrupted.")
     finally:
         cap.release()
