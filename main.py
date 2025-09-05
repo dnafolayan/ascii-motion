@@ -1,4 +1,12 @@
 from PIL import Image
+import argparse
+import os
+import sys
+
+
+def validate_path(path):
+    if not os.path.exists(path):
+        raise argparse.ArgumentError(f"Path '{path}' does not exist")
 
 
 def load_img(path):
