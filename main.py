@@ -6,11 +6,33 @@ import sys
 
 def validate_path(path):
     if not os.path.exists(path):
-        raise argparse.ArgumentError(f"Path '{path}' does not exist")
+        print(f"Path '{path}' does not exist")
+        sys.exit(1)
+
+    if not os.path.isfile(path):
+        print(f"Path '{path}' is not a file")
+        sys.exit(1)
+
+    if not path.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp')):
+        print(f"Path '{path}' is not a valid image file")
+        sys.exit(1)
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Convert an image to ASCII art",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    
+    parser.add_argument("-p", "--path", type=str, required=True, help="Path to the image file")
+
+    args = parser.parse_args()
+    validate_path(args.path)
+
+    return args
 
 
-def load_img(path):
-    img = Image.open(path)
+def load_img():
+    args = parse_args()
+    img = Image.open(args.path)
 
     return img
 
@@ -19,7 +41,7 @@ def resize_img(img, target_width=100):
     w, h = img.size
     aspect_ratio = h / w
 
-    new_height = int(target_width * aspect_ratio * 0.52)
+    new_height = int(target_width * aspect_ratio * 0.55)
     resized_img = img.resize((target_width, new_height))
 
     return resized_img
@@ -57,7 +79,7 @@ def map_brightness(img):
 
 def main():
     try:
-        img = load_img("/mnt/c/Users/dgafo/Downloads/norm.jpg")
+        img = load_img()
     except Exception:
         print("Failed to load Image")
         return
