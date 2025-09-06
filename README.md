@@ -34,10 +34,26 @@ source .venv/bin/activate # Linux / WSL / macOS
 Run the main script:
 
 ```bash
-uv run main.py --source <"camera" / "video">
+uv run main.py --source <"camera" | "video">
 ```
 
+## Example Usage
+
+```bash
+uv run main.py --source camera    # Use webcam
+```
+
+```bash
+uv run main.py --source video # Use video
+```
+
+> You'll be prompted for the video file path
+
+---
+
 > **Note**: When using WSL on Windows, the `--source camera` option may not work due to limited webcam access in WSL. Consider using PowerShell/CMD or native Linux for camera functionality.
+
+---
 
 ## Contributing
 
