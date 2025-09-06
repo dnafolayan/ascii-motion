@@ -19,7 +19,14 @@ cd ascii-motion
 2. Install dependencies using uv:
 
 ```bash
-uv install
+uv sync
+```
+
+3. Activate the virtual environment
+
+```bash
+source .venv/bin/activate # Linux / WSL / macOS
+.venv\Scripts\activate # Windows (PowerShell / CMD)
 ```
 
 ## Usage
@@ -27,7 +34,7 @@ uv install
 Run the main script:
 
 ```bash
-uv run main.py
+uv run main.py --source <"camera" / "video">
 ```
 
 ## Contributing
