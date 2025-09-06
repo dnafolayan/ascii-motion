@@ -1,9 +1,10 @@
-from PIL import Image
-import cv2
 import argparse
-import time
 import os
 import sys
+import time
+
+import cv2
+from PIL import Image
 
 
 def validate_path(path):
@@ -19,17 +20,29 @@ def validate_path(path):
         print(f"File '{path}' is not a supported video format")
         sys.exit(1)
 
+
+def validate_source(source):
+    if source not in ["camera", "video"]:
+        print(f"Source '{source}' is not supported. Choose 'camera' or 'video'.")
+        sys.exit(1)
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Convert an image to ASCII art",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     
-    parser.add_argument("-p", "--path", type=str, required=True, help="Path to the image file")
+    parser.add_argument("--source", type=str, default="camera", choices=["camera", "video"], help="Source type: 'camera' for webcam, 'video' for video file")
+    # parser.add_argument("-p", "--path", type=str, required=True, help="Path to the image file")
 
     args = parser.parse_args()
-    validate_path(args.path)
+    validate_source(args.source)
 
     return args
+
+def request_video_path():
+    path = input("Enter the path to the video file: ").strip()
+    validate_path(path)
+    return path
 
 
 def resize_frame(img, target_width=100):
@@ -48,7 +61,7 @@ def to_grayscale(frame):
     return gray_frame
 
 def map_brightness(frame):
-    ascii_chars = "@%#*+=-:. "
+    ascii_chars = " .:-=+*#%@"
     # ascii_chars = ascii_chars[::-1]
 
     pixels = frame.getdata()
@@ -81,10 +94,14 @@ def frame_to_ascii(frame, width=100):
     ascii_str = map_brightness(img)
     return ascii_str
 
-def play_vid(path):
+def play_vid():
+    args = parse_args()
     try:
-        # cap = cv2.VideoCapture(0) # for camera input
-        cap = cv2.VideoCapture(path) # for video file input
+        if args.source == "video":
+            cap = cv2.VideoCapture(request_video_path()) # for video file input
+        else:
+            cap = cv2.VideoCapture(0) # for camera input
+
         fps = cap.get(cv2.CAP_PROP_FPS)
 
         while cap.isOpened():
@@ -93,11 +110,18 @@ def play_vid(path):
             if not ret:
                 break
 
+            if args.source == "camera":
+                frame = cv2.flip(frame, 1) # for camera input
+
+            
             ascii_frame = frame_to_ascii(frame)
             os.system('cls' if os.name == 'nt' else 'clear')
             print(ascii_frame)
 
-            time.sleep(1 / fps)
+            
+            frame_delay = 1 / fps
+
+            time.sleep(frame_delay)
     except KeyboardInterrupt:
         # os.system('cls' if os.name == 'nt' else 'clear')
         print("Video playback interrupted.")
@@ -107,7 +131,7 @@ def play_vid(path):
 
 def main():
     args = parse_args()
-    play_vid(args.path)
+    play_vid()
 
 
 if __name__ == "__main__":
