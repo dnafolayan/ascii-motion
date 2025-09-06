@@ -16,7 +16,7 @@ def validate_path(path):
         print(f"Path '{path}' is not a file")
         sys.exit(1)
 
-    if not path.lower().endswith(('.mp4', '.avi', '.mov', '.mkv')):
+    if not path.lower().endswith((".mp4", ".avi", ".mov", ".mkv")):
         print(f"File '{path}' is not a supported video format")
         sys.exit(1)
 
@@ -26,18 +26,27 @@ def validate_source(source):
         print(f"Source '{source}' is not supported. Choose 'camera' or 'video'.")
         sys.exit(1)
 
+
 def parse_args():
-    parser = argparse.ArgumentParser(description="Convert an image to ASCII art",
+    parser = argparse.ArgumentParser(
+        description="Convert an image to ASCII art",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    
-    parser.add_argument("--source", type=str, default="camera", choices=["camera", "video"], help="Source type: 'camera' for webcam, 'video' for video file")
+
+    parser.add_argument(
+        "--source",
+        type=str,
+        choices=["camera", "video"],
+        default="camera",
+        help="Source type: 'camera' for webcam, 'video' for video file",
+    )
     # parser.add_argument("-p", "--path", type=str, required=True, help="Path to the image file")
 
     args = parser.parse_args()
     validate_source(args.source)
 
     return args
+
 
 def request_video_path():
     path = input("Enter the path to the video file: ").strip()
@@ -60,6 +69,7 @@ def to_grayscale(frame):
 
     return gray_frame
 
+
 def map_brightness(frame):
     ascii_chars = " .:-=+*#%@"
     # ascii_chars = ascii_chars[::-1]
@@ -68,18 +78,18 @@ def map_brightness(frame):
     w, _ = frame.size
 
     row_idx = 0
-    ascii_str = ''
+    ascii_str = ""
 
     for pixel in pixels:
         ascii_chars_idx = pixel * (len(ascii_chars) - 1) // 255
-        ascii_char = ascii_chars[ascii_chars_idx] 
+        ascii_char = ascii_chars[ascii_chars_idx]
 
         ascii_str = ascii_str + ascii_char
 
         row_idx += 1
-        
+
         if row_idx == w:
-            ascii_str = ascii_str + '\n'
+            ascii_str = ascii_str + "\n"
             row_idx = 0
 
     return ascii_str
@@ -94,13 +104,14 @@ def frame_to_ascii(frame, width=100):
     ascii_str = map_brightness(img)
     return ascii_str
 
+
 def play_vid():
     args = parse_args()
     try:
         if args.source == "video":
-            cap = cv2.VideoCapture(request_video_path()) # for video file input
+            cap = cv2.VideoCapture(request_video_path())  # for video file input
         else:
-            cap = cv2.VideoCapture(0) # for camera input
+            cap = cv2.VideoCapture(0)  # for camera input
 
         fps = cap.get(cv2.CAP_PROP_FPS)
 
@@ -111,14 +122,12 @@ def play_vid():
                 break
 
             if args.source == "camera":
-                frame = cv2.flip(frame, 1) # for camera input
+                frame = cv2.flip(frame, 1)  # for camera input
 
-            
             ascii_frame = frame_to_ascii(frame)
-            os.system('cls' if os.name == 'nt' else 'clear')
+            os.system("cls" if os.name == "nt" else "clear")
             print(ascii_frame)
 
-            
             frame_delay = 1 / fps
 
             time.sleep(frame_delay)
