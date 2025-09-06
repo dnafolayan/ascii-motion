@@ -37,6 +37,8 @@ Run the main script:
 uv run main.py --source <"camera" / "video">
 ```
 
+> **Note**: When using WSL on Windows, the `--source camera` option may not work due to limited webcam access in WSL. Consider using PowerShell/CMD or native Linux for camera functionality.
+
 ## Contributing
 
 1. Fork the repository
