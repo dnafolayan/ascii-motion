@@ -4,8 +4,8 @@ A Python project for creating ASCII art animations.
 
 ## Prerequisites
 
--   Python 3.x
--   uv package manager
+- Python 3.x
+- uv package manager
 
 ## Installation
 
@@ -40,11 +40,11 @@ uv run main.py --source <"camera" | "video">
 ## Example Usage
 
 ```bash
-uv run main.py --source camera    # Use webcam
+uv run src/main.py --source camera    # Use webcam
 ```
 
 ```bash
-uv run main.py --source video # Use video
+uv run src/main.py --source video # Use video
 ```
 
 > You'll be prompted for the video file path
@@ -69,8 +69,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Authors
 
--   Divine Afolayan
+- Divine Afolayan
 
 ## Acknowledgments
 
--   [`ascii-media` by John Afolayan](https://github.com/jnafolayan/ascii-media)
+- [`ascii-media` by John Afolayan](https://github.com/jnafolayan/ascii-media)
