@@ -1,17 +1,10 @@
 import os
 import time
-from parser.parser import parse_args
+from parser.parser import parse_args, request_video_path
 
 import cv2
 
 from image_transformation.image_transformation import frame_to_ascii
-from validation.validation import validate_path, validate_source
-
-
-def request_video_path():
-    path = input("Enter the path to the video file: ").strip()
-    validate_path(path)
-    return path
 
 
 def play_vid(args):
@@ -42,8 +35,8 @@ def play_vid(args):
             sleep_time = next_frame_time - time.perf_counter()
             if sleep_time > 0:
                 time.sleep(sleep_time)
-
-            next_frame_time = time.perf_counter()
+            else:
+                next_frame_time = time.perf_counter()
     except KeyboardInterrupt:
         # os.system('cls' if os.name == 'nt' else 'clear')
         print("Video playback interrupted.")

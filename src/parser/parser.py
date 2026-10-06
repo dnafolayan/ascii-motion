@@ -1,6 +1,6 @@
 import argparse
 
-from validation.validation import validate_source
+from validation.validation import validate_path, validate_source
 
 
 def parse_args():
@@ -22,3 +22,9 @@ def parse_args():
     validate_source(args.source)
 
     return args
+
+
+def request_video_path():
+    path = input("Enter the path to the video file: ").strip()
+    validate_path(path)
+    return path
