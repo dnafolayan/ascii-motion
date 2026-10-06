@@ -54,12 +54,12 @@ def request_video_path():
     return path
 
 
-def resize_frame(img, target_width=100):
+def resize_frame(img, target_width=160):
     w, h = img.size
     aspect_ratio = h / w
 
     new_height = int(target_width * aspect_ratio * 0.55)
-    resized_frame = img.resize((target_width, new_height))
+    resized_frame = img.resize((target_width, new_height), Image.Resampling.LANCZOS)
 
     return resized_frame
 
@@ -95,7 +95,7 @@ def map_brightness(frame):
     return ascii_str
 
 
-def frame_to_ascii(frame, width=100):
+def frame_to_ascii(frame, width=160):
     img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
     img = resize_frame(img, target_width=width)
